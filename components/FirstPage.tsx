@@ -6,6 +6,7 @@ import { Button } from './ui/button'
 import Image from 'next/image'
 import LoadingPage, { LoadingBar } from './Loading'
 import { useToast } from '@/hooks/use-toast'
+import { Select } from './ui/select'
 
 
 const FirstPage = () => {
@@ -40,7 +41,7 @@ const FirstPage = () => {
       <LoadingBar />
       <LoadingPage />
     </> : (
-      <main className='border border-black px-10 rounded-xl py-5'>
+      <main className='border border-black px-10 rounded-xl py-5 mt-48'>
         <h1 className='font-bold'>Flights</h1>
         <div className='py-5 flex items-center justify-center gap-5'>
           <ComboboxDemo where={"Where From ?"} val={"From"} onChange={setFrom} />

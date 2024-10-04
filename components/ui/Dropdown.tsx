@@ -2,6 +2,7 @@
 
 import * as React from "react"
 import { Check, ChevronsUpDown } from "lucide-react"
+import { airportsData } from "@/data"
 
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
@@ -19,32 +20,26 @@ import {
     PopoverTrigger,
 } from "@/components/ui/popover"
 
-const frameworks = [
-    {
-        value: "next.js",
-        label: "Next.js",
-    },
-    {
-        value: "sveltekit",
-        label: "SvelteKit",
-    },
-    {
-        value: "nuxt.js",
-        label: "Nuxt.js",
-    },
-    {
-        value: "remix",
-        label: "Remix",
-    },
-    {
-        value: "astro",
-        label: "Astro",
-    },
-]
+interface Airport {
+    city: string;
+    code: string;
+    name: string;
+}
 
-export function ComboboxDemo({ where, val, onChange }: { where: string, val: string, onChange: (value: string) => void }) {
+export function ComboboxDemo({ where, val, onChange }: { where: string, val: string, onChange: (value: Airport | null) => void }) {
     const [open, setOpen] = React.useState(false)
-    const [value, setValue] = React.useState("")
+    const [selectedAirport, setSelectedAirport] = React.useState<Airport | null>(null)
+
+    const handleSelect = (airport: Airport) => {
+        // Toggle selection logic
+        if (selectedAirport && selectedAirport.code === airport.code) {
+            onChange(null);
+        } else {
+            setSelectedAirport(airport); 
+            onChange(airport);
+        }
+        setOpen(false);
+    };
 
     return (
         <Popover open={open} onOpenChange={setOpen}>
@@ -53,16 +48,17 @@ export function ComboboxDemo({ where, val, onChange }: { where: string, val: str
                     variant="outline"
                     role="combobox"
                     aria-expanded={open}
-                    className="w-[200px] items-center justify-between py-8"
+                    className="w-[300px] items-center justify-between py-8 px-4"
                     onClick={() => setOpen(!open)}
                 >
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" id="aim">
-                        <path fill="#000" fill-rule="evenodd" d="M12 8a4 4 0 1 0 0 8 4 4 0 0 0 0-8Zm-2 4a2 2 0 1 1 4 0 2 2 0 0 1-4 0Z" clip-rule="evenodd"></path>
-                        <path fill="#000" fill-rule="evenodd" d="M13 1a1 1 0 1 0-2 0v1.05A10.003 10.003 0 0 0 2.05 11H1a1 1 0 1 0 0 2h1.05A10.003 10.003 0 0 0 11 21.95V23a1 1 0 1 0 2 0v-1.05A10.003 10.003 0 0 0 21.95 13H23a1 1 0 1 0 0-2h-1.05A10.003 10.003 0 0 0 13 2.05V1Zm-1 19a8 8 0 1 1 0-16 8 8 0 0 1 0 16Z" clip-rule="evenodd"></path>
-                    </svg>
-                    {value
-                        ? frameworks.find((framework) => framework.value === value)?.label
-                        : `${where}`}
+                    {selectedAirport ? (
+                        <div className="flex flex-col items-start w-[95%]">
+                            <span>{selectedAirport.city}</span>
+                            <span className="w-full flex text-sm text-muted-foreground overflow-hidden">
+                                {selectedAirport.name}
+                            </span>
+                        </div>
+                    ) : `${where}`}
                     <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                 </Button>
             </PopoverTrigger>
@@ -70,25 +66,15 @@ export function ComboboxDemo({ where, val, onChange }: { where: string, val: str
                 <Command>
                     <CommandInput placeholder={`${val}`} />
                     <CommandList>
-                        <CommandEmpty>No framework found.</CommandEmpty>
+                        <CommandEmpty>No Such Airports Found...</CommandEmpty>
                         <CommandGroup>
-                            {frameworks.map((framework) => (
+                            {airportsData.map((airport) => (
                                 <CommandItem
-                                    key={framework.value}
-                                    value={framework.value}
-                                    onSelect={(currentValue) => {
-                                        setValue(currentValue === value ? "" : currentValue)
-                                        onChange(currentValue === value ? "" : currentValue)
-                                        setOpen(false)
-                                    }}
+                                    key={airport.code} // Use a unique identifier
+                                    value={JSON.stringify(airport)} // Store the entire airport object as a JSON string
+                                    onSelect={() => handleSelect(airport)} // Pass the airport object to the handler
                                 >
-                                    <Check
-                                        className={cn(
-                                            "mr-2 h-4 w-4",
-                                            value === framework.value ? "opacity-100" : "opacity-0"
-                                        )}
-                                    />
-                                    {framework.label}
+                                    {airport.name}
                                 </CommandItem>
                             ))}
                         </CommandGroup>

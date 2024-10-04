@@ -20,19 +20,21 @@ interface DatePickerDemoProps {
 
 export function DatePickerDemo({val, onChange}: DatePickerDemoProps) {
   const [date, setDate] = React.useState<Date | undefined>(undefined)
+  const [open, setOpen] = React.useState(false)
 
   const handleDateChange = (selectedDate: Date | undefined ) => {
     setDate(selectedDate);
     onChange(selectedDate ?? null); 
+    setOpen(false)
   };
 
   return (
-    <Popover>
+    <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
         <Button
           variant={"outline"}
           className={cn(
-            "w-[200px] justify-start text-left font-normal p-8",
+            "w-[250px] justify-center text-left font-normal p-8",
             !date && "text-muted-foreground"
           )}
         >
