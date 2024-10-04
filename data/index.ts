@@ -1,4 +1,4 @@
-{
+export const airportsData = {
     "airports": [
       {
         "name": "Indira Gandhi International Airport",
@@ -61,4 +61,5 @@
         "country": "Japan"
       }
     ]
-  }
+  };
+  

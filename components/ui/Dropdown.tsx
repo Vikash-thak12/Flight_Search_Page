@@ -42,7 +42,7 @@ const frameworks = [
     },
 ]
 
-export function ComboboxDemo({ where, val }: { where: string, val: string }) {
+export function ComboboxDemo({ where, val, onChange }: { where: string, val: string, onChange: (value: string) => void }) {
     const [open, setOpen] = React.useState(false)
     const [value, setValue] = React.useState("")
 
@@ -54,6 +54,7 @@ export function ComboboxDemo({ where, val }: { where: string, val: string }) {
                     role="combobox"
                     aria-expanded={open}
                     className="w-[200px] items-center justify-between py-8"
+                    onClick={() => setOpen(!open)}
                 >
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" id="aim">
                         <path fill="#000" fill-rule="evenodd" d="M12 8a4 4 0 1 0 0 8 4 4 0 0 0 0-8Zm-2 4a2 2 0 1 1 4 0 2 2 0 0 1-4 0Z" clip-rule="evenodd"></path>
@@ -77,6 +78,7 @@ export function ComboboxDemo({ where, val }: { where: string, val: string }) {
                                     value={framework.value}
                                     onSelect={(currentValue) => {
                                         setValue(currentValue === value ? "" : currentValue)
+                                        onChange(currentValue === value ? "" : currentValue)
                                         setOpen(false)
                                     }}
                                 >
