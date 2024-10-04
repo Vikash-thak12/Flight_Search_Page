@@ -5,22 +5,27 @@ import { DatePickerDemo } from './ui/DatePicker'
 import { Button } from './ui/button'
 import Image from 'next/image'
 import LoadingPage, { LoadingBar } from './Loading'
+import { useToast } from '@/hooks/use-toast'
+
 
 const FirstPage = () => {
   const [isloading, setIsloading] = useState(false)
   const [from, setFrom] = useState('');
   const [to, setTo] = useState('')
-  const [departure, setDeparture] = useState<Date | null>(null); // Store departure date
-  const [destination, setDestination] = useState<Date | null>(null); // Store return date
+  const [departure, setDeparture] = useState<Date | null>(null);
+  const [destination, setDestination] = useState<Date | null>(null);
+  const { toast } = useToast();
 
   const handleSearch = () => {
+    if (!from || !to || !departure || !destination) {
+      toast({
+        title: "Error",
+        description: "Please Fill all the details",
+      })
+      return
+    }
     setIsloading(true)
     try {
-      // if(!from || !to || !departure || !destination) {
-      //   return res.status(400).json({
-      //     message: "Please fill all fields"
-      //   })
-      // }
       console.log({ from, to, departure, destination });
       setTimeout(() => {
         setIsloading(false)
