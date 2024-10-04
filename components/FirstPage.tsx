@@ -18,7 +18,6 @@ const FirstPage = () => {
             height={60}
           />
         </div>
-
         <ComboboxDemo where={"Where To ?"} val={"Destination"} />
         <DatePickerDemo val={"Departure"} />
         <DatePickerDemo val={"Return"} />
