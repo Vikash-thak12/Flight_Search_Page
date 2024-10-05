@@ -1,10 +1,10 @@
 "use client"
 
 import * as React from "react"
-import { Check, ChevronsUpDown } from "lucide-react"
+// import { Check, ChevronsUpDown } from "lucide-react"
 import { airportsData } from "@/data"
 
-import { cn } from "@/lib/utils"
+// import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import {
     Command,
@@ -19,6 +19,7 @@ import {
     PopoverContent,
     PopoverTrigger,
 } from "@/components/ui/popover"
+import { ChevronsUpDown } from "lucide-react"
 
 interface Airport {
     city: string;

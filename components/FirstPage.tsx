@@ -4,8 +4,9 @@ import { ComboboxDemo } from "../components/ui/Dropdown"
 import { DatePickerDemo } from './ui/DatePicker'
 import { Button } from './ui/button'
 import Image from 'next/image'
-import LoadingPage, { LoadingBar, UpperBar } from './Loading'
+import LoadingPage from './Loading'
 import { useToast } from '@/hooks/use-toast'
+import { useRouter } from 'next/navigation'
 
 type Airport = {
   city: string;
@@ -15,12 +16,13 @@ type Airport = {
 
 
 const FirstPage = () => {
-  const [isloading, setIsloading] = useState(true)
+  const [isloading, setIsloading] = useState(false)
   const [from, setFrom] = useState<Airport | null>(null);
   const [to, setTo] = useState<Airport | null>(null);
   const [departure, setDeparture] = useState<Date | null>(null);
   const [destination, setDestination] = useState<Date | null>(null);
   const { toast } = useToast();
+  const router = useRouter()
 
   const handleSearch = () => {
     if (!from || !to || !departure || !destination) {
@@ -35,7 +37,9 @@ const FirstPage = () => {
       console.log({ from, to, departure, destination });
       setTimeout(() => {
         setIsloading(false)
+        router.push("/dashboard")
       }, 3000);
+      
     } catch (error) {
       console.log("Error while sending the request", error)
     }
@@ -43,11 +47,9 @@ const FirstPage = () => {
 
   return isloading ?
     <>
-      <UpperBar />
-      <LoadingBar />
       <LoadingPage />
     </> : (
-      <main className='border border-black px-10 rounded-xl py-5 mt-48'>
+      <main className='border border-black px-10 rounded-xl py-5 mt-5'>
         <h1 className='font-bold'>Flights</h1>
         <div className='py-5 flex items-center justify-center gap-5'>
           <ComboboxDemo where={"Where From ?"} val={"From"} onChange={setFrom} />
