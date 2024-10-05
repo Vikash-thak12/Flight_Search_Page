@@ -4,15 +4,20 @@ import { ComboboxDemo } from "../components/ui/Dropdown"
 import { DatePickerDemo } from './ui/DatePicker'
 import { Button } from './ui/button'
 import Image from 'next/image'
-import LoadingPage, { LoadingBar } from './Loading'
+import LoadingPage, { LoadingBar, UpperBar } from './Loading'
 import { useToast } from '@/hooks/use-toast'
-import { Select } from './ui/select'
+
+type Airport = {
+  city: string;
+  code: string;
+  name: string;
+};
 
 
 const FirstPage = () => {
-  const [isloading, setIsloading] = useState(false)
-  const [from, setFrom] = useState('');
-  const [to, setTo] = useState('')
+  const [isloading, setIsloading] = useState(true)
+  const [from, setFrom] = useState<Airport | null>(null);
+  const [to, setTo] = useState<Airport | null>(null);
   const [departure, setDeparture] = useState<Date | null>(null);
   const [destination, setDestination] = useState<Date | null>(null);
   const { toast } = useToast();
@@ -38,6 +43,7 @@ const FirstPage = () => {
 
   return isloading ?
     <>
+      <UpperBar />
       <LoadingBar />
       <LoadingPage />
     </> : (
