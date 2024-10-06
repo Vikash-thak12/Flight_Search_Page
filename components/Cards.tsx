@@ -6,7 +6,6 @@ const Cards = () => {
     <div className='h-full overflow-auto'>
       <Card />
       <Card />
-      <Card />
     </div>
   )
 }
